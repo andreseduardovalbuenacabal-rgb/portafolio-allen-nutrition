@@ -1,0 +1,938 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Andrés Eduardo Valbuena Cabal — Diseñador Gráfico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0D0D1A;
+      --surface: #12122A;
+      --fg: #E2E2E6;
+      --muted: #7A7A8A;
+      --border: rgba(120, 75, 251, 0.15);
+      --accent: #784CFB;
+      --accent-secondary: #FF3CAC;
+      --accent-data: #00FFAA;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 24px;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --duration-slow: 900ms;
+      --duration-med: 600ms;
+      --duration-fast: 300ms;
+      --section-pad: clamp(64px, 10vh, 120px);
+      --content-max: 1280px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+    a { color: var(--accent); text-decoration: none; transition: color var(--duration-fast) var(--ease-out-expo); }
+    a:hover { color: var(--accent-data); }
+    ::selection { background: var(--accent); color: #fff; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* DOT GRID GLOBAL — fondo fijo en todo el sitio */
+    .global-dotgrid {
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 0 clamp(20px, 4vw, 48px);
+      position: relative;
+      z-index: 2;
+    }
+    section {
+      padding: var(--section-pad) 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .hero-layers {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-layer {
+      position: absolute;
+      inset: -40px;
+    }
+    .hero-layer:nth-child(1) {
+      background: radial-gradient(ellipse at 40% 50%, rgba(120, 75, 251, 0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 30%, rgba(255, 60, 172, 0.05) 0%, transparent 50%);
+    }
+    .hero-layer:nth-child(2) {
+      background: radial-gradient(ellipse at 60% 70%, rgba(0, 255, 170, 0.06) 0%, transparent 50%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+      width: 100%;
+    }
+    .hero-text {
+      flex: 1;
+      max-width: 680px;
+    }
+    .hero-photo-wrapper {
+      flex-shrink: 0;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      overflow: hidden;
+      opacity: 0.75;
+      transform: scale(0.9);
+      animation: photoIn 1.2s var(--ease-spring) 0.3s forwards;
+      position: relative;
+    }
+    .hero-photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    @keyframes photoIn {
+      0% { opacity: 0; transform: scale(0.7); }
+      100% { opacity: 0.75; transform: scale(1); }
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-data);
+      border: 1px solid var(--accent-data);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s var(--ease-out-expo) 0.2s forwards;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent-data);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(40px, 7vw, 100px);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: var(--fg);
+      opacity: 0;
+      transform: scale(0.95) translateY(30px);
+      animation: heroTitleIn 1.2s var(--ease-spring) 0.4s forwards;
+    }
+    .hero-title .accent { color: var(--accent); }
+    .hero-title .accent-2 { color: var(--accent-secondary); }
+    .hero-title .subline {
+      display: block;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: clamp(14px, 1.8vw, 20px);
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--muted);
+      margin-top: 8px;
+      opacity: 0.8;
+    }
+    @keyframes heroTitleIn {
+      0% { opacity: 0; transform: scale(0.95) translateY(30px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .hero-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 28px;
+      margin-top: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s var(--ease-out-expo) 1.05s forwards;
+    }
+    .hero-highlight {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--fg);
+    }
+    .hero-highlight svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .hero-sub {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: clamp(15px, 1.6vw, 19px);
+      line-height: 1.5;
+      color: var(--muted);
+      margin-top: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s var(--ease-out-expo) 0.9s forwards;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s var(--ease-out-expo) 1.2s forwards;
+    }
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-stat-value {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1;
+      color: var(--accent-data);
+    }
+    .hero-stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 40px;
+      padding: 14px 36px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-out-expo), transform var(--duration-fast) var(--ease-out-expo);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s var(--ease-out-expo) 1.4s forwards;
+    }
+    .hero-cta:hover {
+      background: var(--accent-secondary);
+      transform: translateY(-2px);
+    }
+    .hero-cta svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-spring);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(36px, 5vw, 72px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+
+    .experience-grid {
+      display: grid;
+      gap: 32px;
+    }
+    .exp-card {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 24px;
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: border-color var(--duration-fast) var(--ease-out-expo), transform var(--duration-fast) var(--ease-out-expo);
+    }
+    .exp-card:hover {
+      border-color: var(--accent);
+      transform: translateX(8px);
+    }
+    .exp-year {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 2rem;
+      line-height: 1;
+      color: var(--accent);
+    }
+    .exp-year small {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .exp-company {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+    .exp-role {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-secondary);
+      margin-top: 2px;
+    }
+    .exp-impact {
+      margin-top: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .exp-impact-marker {
+      width: 4px;
+      height: 24px;
+      background: var(--accent-data);
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .exp-impact p {
+      font-weight: 500;
+      color: var(--fg);
+      line-height: 1.5;
+    }
+    .exp-tasks {
+      margin-top: 16px;
+      padding-left: 20px;
+      list-style: none;
+    }
+    .exp-tasks li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+      position: relative;
+      padding-left: 16px;
+    }
+    .exp-tasks li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-family: var(--font-mono);
+    }
+    .exp-tasks li + li { margin-top: 6px; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .project-card {
+      position: relative;
+      padding: 36px 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: border-color var(--duration-fast) var(--ease-out-expo);
+      cursor: default;
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .project-card:hover { border-color: var(--accent); }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(120, 75, 251, 0.05), transparent);
+      opacity: 0;
+      transition: opacity var(--duration-med) var(--ease-out-expo);
+    }
+    .project-card:hover::before { opacity: 1; }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      transition: border-color var(--duration-fast) var(--ease-out-expo), transform var(--duration-fast) var(--ease-out-expo);
+      pointer-events: none;
+    }
+    .project-card:hover::after {
+      border-color: var(--accent-secondary);
+      transform: scale(1.02);
+    }
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-data);
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .project-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(20px, 2.5vw, 32px);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+    .project-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 10px;
+      max-width: 340px;
+      position: relative;
+      z-index: 1;
+    }
+    .project-tech {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .project-tech span {
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+    }
+    .project-card.featured {
+      grid-column: 1 / -1;
+      min-height: 300px;
+      background: linear-gradient(135deg, var(--surface), rgba(120, 75, 251, 0.08));
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+    .skill-item {
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--duration-fast) var(--ease-out-expo);
+    }
+    .skill-item:hover { border-color: var(--accent); }
+    .skill-name {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .skill-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-data));
+      width: 0%;
+      transition: width 1.2s var(--ease-out-expo);
+    }
+
+    .edu-timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+    .edu-timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+    .edu-entry {
+      position: relative;
+      padding-bottom: 40px;
+    }
+    .edu-entry:last-child { padding-bottom: 0; }
+    .edu-dot {
+      position: absolute;
+      left: -25px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 1px var(--border);
+    }
+    .edu-degree {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+    }
+    .edu-school {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-secondary);
+      margin-top: 2px;
+    }
+    .edu-year {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--duration-fast) var(--ease-out-expo), transform var(--duration-fast) var(--ease-out-expo);
+      color: var(--fg);
+    }
+    .contact-link:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      color: var(--fg);
+    }
+    .contact-link svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .contact-value {
+      font-size: 0.9rem;
+      color: var(--fg);
+      margin-top: 2px;
+    }
+    .footer-bottom {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-bottom p {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .exp-card { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .hero-content { flex-direction: column; gap: 32px; text-align: center; }
+      .hero-photo-wrapper { width: 180px; height: 180px; }
+      .hero-highlights { justify-content: center; }
+      .hero-stats { justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      :root { --section-pad: 56px; }
+      .hero-title { font-size: clamp(36px, 14vw, 56px); }
+      .exp-card { padding: 24px; }
+      .project-card { padding: 28px 20px; min-height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- DOT GRID — fondo fijo en todo el sitio -->
+  <div class="global-dotgrid"></div>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-layers">
+      <div class="hero-layer"></div>
+      <div class="hero-layer"></div>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">Disponible para proyectos</div>
+        <h1 class="hero-title">
+          ANDRÉS EDUARDO<br>
+          <span class="accent">VALBUENA CABAL</span>
+          <span class="subline">Diseñador Gráfico · Motion & UI Developer</span>
+        </h1>
+        <div class="hero-highlights">
+          <span class="hero-highlight">
+            <svg><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Identidad visual & sistemas de marca
+          </span>
+          <span class="hero-highlight">
+            <svg><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            Prototipos UI/UX funcionales
+          </span>
+          <span class="hero-highlight">
+            <svg><circle cx="12" cy="12" r="10"/><polyline points="10 8 16 12 10 16"/></svg>
+            Motion design & contenido animado
+          </span>
+          <span class="hero-highlight">
+            <svg><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            Fotomontaje & retoque profesional
+          </span>
+        </div>
+        <p class="hero-sub">
+          Traduzco objetivos de negocio en soluciones visuales de alta precisión. Mi flujo de trabajo integra criterio tipográfico, cromático y estructural riguroso, potenciado con inteligencia artificial para asegurar resultados de calidad superior. Cada proyecto —desde un sistema de marca hasta un prototipo interactivo— lo ejecuto con metodologías creativas que garantizan consistencia y alto impacto.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value">2</span>
+            <span class="hero-stat-label">Empresas</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value">'26</span>
+            <span class="hero-stat-label">Graduación</span>
+          </div>
+        </div>
+        <a href="#experience" class="hero-cta">
+          Ver trayectoria
+          <svg><line x1="2" y1="12" x2="22" y2="12"/><polyline points="18 8 22 12 18 16"/></svg>
+        </a>
+      </div>
+      <div class="hero-photo-wrapper">
+        <img src="mqg74w0w-IMG_0559_Original.jpeg" alt="Andrés Eduardo Valbuena Cabal" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="experience">
+    <div class="container">
+      <div class="section-label reveal">Trayectoria</div>
+      <h2 class="section-title reveal">Experiencia<br>Profesional</h2>
+      <div class="experience-grid">
+        <div class="exp-card reveal">
+          <div class="exp-year">2025<small>Jun – Dic</small></div>
+          <div>
+            <div class="exp-company">Allen Nutrition S.A.S.</div>
+            <div class="exp-role">Pasante Universitario — Opción de Grado</div>
+            <div class="exp-impact"><div class="exp-impact-marker"></div><p>Desarrollo de piezas gráficas y animaciones funcionales orientadas a captación de usuarios actuales y potenciales, fortaleciendo la presencia de marca en canales digitales y físicos.</p></div>
+            <ul class="exp-tasks">
+              <li>Producción de contenido multimedia para redes sociales y estrategias de mercadeo</li>
+              <li>Colaboración activa en reuniones de estrategia de marca y planning creativo</li>
+              <li>Diseño de animaciones funcionales alineadas con objetivos de conversión</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exp-card reveal">
+          <div class="exp-year">2024<small>Jul – Ene</small></div>
+          <div>
+            <div class="exp-company">Guirnaldas Innovaflor S.A.S.</div>
+            <div class="exp-role">Practicante Universitario</div>
+            <div class="exp-impact"><div class="exp-impact-marker"></div><p>Aplicación de conocimientos técnicos en diseño gráfico para comunicaciones internas y externas, con producción de video corporativo y diseño de interfaces web.</p></div>
+            <ul class="exp-tasks">
+              <li>Diseño de piezas gráficas y material promocional para ferias comerciales</li>
+              <li>Producción de video corporativo y contenidos para intranet</li>
+              <li>Diseño y maquetación de interfaces web funcionales</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="container">
+      <div class="section-label reveal">Servicios</div>
+      <h2 class="section-title reveal">Trabajos<br>Destacados</h2>
+      <div class="projects-grid">
+        <div class="project-card featured reveal-scale">
+          <div class="project-tag">Branding · Estrategia</div>
+          <div class="project-title">Identidades de Marca</div>
+          <div class="project-desc">Sistemas de identidad visual completos: logotipo, paleta, tipografía, aplicaciones y guías de marca.</div>
+          <div class="project-tech"><span>Illustrator</span><span>Photoshop</span><span>Brand Strategy</span><span>Design Systems</span></div>
+        </div>
+        <div class="project-card reveal-scale">
+          <div class="project-tag">UI/UX · Frontend</div>
+          <div class="project-title">Interfaces Web</div>
+          <div class="project-desc">Prototipos funcionales y maquetación de interfaces con sistemas de navegación, componentes reutilizables y flujos optimizados.</div>
+          <div class="project-tech"><span>Figma</span><span>HTML/CSS</span><span>UI Systems</span></div>
+        </div>
+        <div class="project-card reveal-scale">
+          <div class="project-tag">Edición · Composición</div>
+          <div class="project-title">Fotomontajes</div>
+          <div class="project-desc">Composición y retoque fotográfico avanzado con integración de elementos, ajuste cromático y acabado profesional.</div>
+          <div class="project-tech"><span>Photoshop</span><span>Lightroom</span></div>
+        </div>
+        <div class="project-card reveal-scale">
+          <div class="project-tag">Redes · Estrategia</div>
+          <div class="project-title">Contenido para Redes Sociales</div>
+          <div class="project-desc">Piezas gráficas y animaciones funcionales para redes sociales, alineadas con estrategias de mercadeo y captación.</div>
+          <div class="project-tech"><span>Photoshop</span><span>Illustrator</span><span>After Effects</span></div>
+        </div>
+        <div class="project-card reveal-scale">
+          <div class="project-tag">Producto · Envase</div>
+          <div class="project-title">Packaging</div>
+          <div class="project-desc">Diseño de empaques y envases con enfoque en comunicación visual, materialidad y experiencia de unboxing.</div>
+          <div class="project-tech"><span>Illustrator</span><span>Photoshop</span></div>
+        </div>
+        <div class="project-card reveal-scale">
+          <div class="project-tag">Animación · Contenido</div>
+          <div class="project-title">Animaciones Motion Graphic</div>
+          <div class="project-desc">Animación digital con narrativa visual, edición y motion graphics para comunicación corporativa y contenido digital.</div>
+          <div class="project-tech"><span>After Effects</span><span>Premiere</span><span>Motion Design</span></div>
+        </div>
+        <div class="project-card reveal-scale">
+          <div class="project-tag">Editorial · Publicación</div>
+          <div class="project-title">Diseño Editorial</div>
+          <div class="project-desc">Maquetación de revistas, catálogos, folletos y publicaciones digitales con criterio tipográfico, retícula y jerarquía visual.</div>
+          <div class="project-tech"><span>InDesign</span><span>Illustrator</span><span>Photoshop</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-label reveal">Capacidades</div>
+      <h2 class="section-title reveal">Habilidades<br>Técnicas</h2>
+      <div class="skills-grid">
+        <div class="skill-item reveal"><div class="skill-name"><span>UI/UX Design</span><span data-level="90">90%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-target="90"></div></div></div>
+        <div class="skill-item reveal"><div class="skill-name"><span>Motion Design</span><span data-level="50">50%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-target="50"></div></div></div>
+        <div class="skill-item reveal"><div class="skill-name"><span>Brand Identity</span><span data-level="85">85%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-target="85"></div></div></div>
+        <div class="skill-item reveal"><div class="skill-name"><span>HTML/CSS</span><span data-level="60">60%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-target="60"></div></div></div>
+        <div class="skill-item reveal"><div class="skill-name"><span>Figma</span><span data-level="70">70%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-target="70"></div></div></div>
+        <div class="skill-item reveal"><div class="skill-name"><span>After Effects</span><span data-level="50">50%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-target="50"></div></div></div>
+        <div class="skill-item reveal"><div class="skill-name"><span>Photoshop / Illustrator</span><span data-level="90">90%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-target="90"></div></div></div>
+        <div class="skill-item reveal"><div class="skill-name"><span>Herramientas IA</span><span data-level="70">70%</span></div><div class="skill-bar"><div class="skill-bar-fill" data-target="70"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education">
+    <div class="container">
+      <div class="section-label reveal">Formación</div>
+      <h2 class="section-title reveal">Educación</h2>
+      <div class="edu-timeline">
+        <div class="edu-entry reveal-left">
+          <div class="edu-dot"></div>
+          <div class="edu-degree">Diseño Gráfico</div>
+          <div class="edu-school">Corporación Universitaria Taller 5 · Chía, Colombia</div>
+          <div class="edu-year">2021 – Agosto 2026</div>
+        </div>
+        <div class="edu-entry reveal-left">
+          <div class="edu-dot"></div>
+          <div class="edu-degree">Auxiliar de Vuelo Profesional</div>
+          <div class="edu-school">Escuela Aeronáutica Ecotet · Colombia</div>
+          <div class="edu-year">2019 – 2020</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-label reveal">Contacto</div>
+      <h2 class="section-title reveal">Conectemos</h2>
+      <div class="contact-grid">
+        <a href="mailto:andreseduardovalbuenacabal@gmail.com" class="contact-link reveal-scale">
+          <svg><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value">andreseduardovalbuenacabal@gmail.com</div>
+          </div>
+        </a>
+        <a href="tel:+573218569720" class="contact-link reveal-scale">
+          <svg><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <div>
+            <div class="contact-label">Teléfono</div>
+            <div class="contact-value">+57 321 856 9720</div>
+          </div>
+        </a>
+        <a href="#" class="contact-link reveal-scale" target="_blank" rel="noopener">
+          <svg><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          <div>
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-value">linkedin.com/in/andresvalbuena</div>
+          </div>
+        </a>
+        <a href="#" class="contact-link reveal-scale" target="_blank" rel="noopener">
+          <svg><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <div>
+            <div class="contact-label">GitHub</div>
+            <div class="contact-value">github.com/andresvalbuena</div>
+          </div>
+        </a>
+      </div>
+      <div class="footer-bottom reveal">
+        <p>© 2025 Andrés Eduardo Valbuena Cabal · Diseñador Gráfico</p>
+        <p>Bogotá, Colombia</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function() {
+      const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-scale');
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+      }, { threshold: 0.15 });
+      revealEls.forEach(el => obs.observe(el));
+
+      const skillBars = document.querySelectorAll('.skill-bar-fill');
+      const barObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const target = parseInt(entry.target.dataset.target, 10);
+            entry.target.style.width = target + '%';
+            barObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      skillBars.forEach(bar => barObs.observe(bar));
+    })();
+
+    document.querySelector('.footer-bottom p:first-child').textContent =
+      '© ' + new Date().getFullYear() + ' Andrés Eduardo Valbuena Cabal · Diseñador Gráfico';
+  </script>
+</body>
+</html>
