@@ -1,0 +1,31 @@
+{
+  "color": {
+    "primitive": {
+      "brand": {
+        "infernal-red": { "value": "#711516" },
+        "gray": { "value": "#B0A9A1" },
+        "bright-orange": { "value": "#E58442" }
+      },
+      "neutral": {
+        "white": { "value": "#FFFFFF" },
+        "black": { "value": "#000000" }
+      }
+    },
+    "semantic": {
+      "background": {
+        "primary": { "value": "{color.primitive.neutral.white}" },
+        "accent": { "value": "{color.primitive.brand.infernal-red}" }
+      },
+      "text": {
+        "primary": { "value": "{color.primitive.neutral.black}" },
+        "secondary": { "value": "{color.primitive.brand.gray}" },
+        "inverse": { "value": "{color.primitive.neutral.white}" }
+      },
+      "component": {
+        "cta": { "value": "{color.primitive.brand.bright-orange}" },
+        "border": { "value": "{color.primitive.brand.gray}" }
+      }
+    }
+  }
+}
+
